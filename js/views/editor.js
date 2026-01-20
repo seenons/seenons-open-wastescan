@@ -2,15 +2,17 @@
  * Scan Editor View
  */
 
-import { getScanById, createScan, updateScan, createEmptyScan, STREAM_PRESETS } from '../storage.js';
+import { getScanById, createScan, updateScan, createEmptyScan, STREAM_PRESETS, getApiKey, hasApiKey } from '../storage.js';
 import { generateUUID } from '../utils/uuid.js';
 import { processImage } from '../utils/image.js';
 import { formatKg, formatPercent, formatDateTimeLocal, parseNumber } from '../utils/format.js';
 import { generateReportHtml } from '../report/export.js';
+import { analyzeWasteImage } from '../api/gemini.js';
 
 let currentScan = null;
 let isNewScan = true;
 let onBackCallback = null;
+let isAnalyzing = false;
 
 /**
  * Initialize the editor view
@@ -51,6 +53,9 @@ export function initEditorView(onBack) {
   
   // Add stream button
   document.getElementById('add-stream-btn')?.addEventListener('click', handleAddStream);
+  
+  // AI Analyze button
+  document.getElementById('analyze-btn')?.addEventListener('click', handleAnalyze);
 }
 
 /**
@@ -114,12 +119,14 @@ function renderPhotoPreview() {
   const preview = document.getElementById('photo-preview');
   const captureBtn = document.getElementById('photo-capture-btn');
   const removeBtn = document.getElementById('photo-remove-btn');
+  const analyzeBtn = document.getElementById('analyze-btn');
   
   if (currentScan.photo) {
     preview.innerHTML = `<img src="${currentScan.photo.dataUrl}" alt="Scan photo">`;
     preview.classList.add('has-photo');
     if (captureBtn) captureBtn.textContent = 'Replace Photo';
     if (removeBtn) removeBtn.style.display = 'inline-flex';
+    if (analyzeBtn) analyzeBtn.style.display = hasApiKey() ? 'inline-flex' : 'none';
   } else {
     preview.innerHTML = `
       <div class="photo-placeholder">
@@ -134,6 +141,7 @@ function renderPhotoPreview() {
     preview.classList.remove('has-photo');
     if (captureBtn) captureBtn.textContent = 'Take Photo';
     if (removeBtn) removeBtn.style.display = 'none';
+    if (analyzeBtn) analyzeBtn.style.display = 'none';
   }
 }
 
@@ -437,4 +445,90 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+/**
+ * Handle AI analysis of the photo
+ */
+async function handleAnalyze() {
+  if (isAnalyzing) return;
+  
+  if (!currentScan.photo) {
+    alert('Please add a photo first.');
+    return;
+  }
+  
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    alert('Please configure your Gemini API key in Settings first.');
+    return;
+  }
+  
+  const analyzeBtn = document.getElementById('analyze-btn');
+  const originalText = analyzeBtn?.innerHTML;
+  
+  try {
+    isAnalyzing = true;
+    if (analyzeBtn) {
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = `
+        <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        Analyzing...
+      `;
+    }
+    
+    const result = await analyzeWasteImage(apiKey, currentScan.photo.dataUrl);
+    
+    // Apply results
+    if (result.totalEstimateKg > 0) {
+      currentScan.totalResidualKg = result.totalEstimateKg;
+      const totalWeightInput = document.getElementById('total-weight');
+      if (totalWeightInput) totalWeightInput.value = result.totalEstimateKg;
+    }
+    
+    if (result.streams && result.streams.length > 0) {
+      // Add AI-detected streams
+      currentScan.streams = result.streams.map(stream => ({
+        id: generateUUID(),
+        name: stream.name,
+        weightKg: stream.weightKg
+      }));
+      renderStreams();
+    }
+    
+    updateSummary();
+    
+    // Show success message with confidence
+    let message = 'AI analysis complete';
+    if (result.confidence) {
+      message += ` (${result.confidence} confidence)`;
+    }
+    showToast(message);
+    
+    // Add notes if provided
+    if (result.notes && !currentScan.notes) {
+      currentScan.notes = `AI Analysis: ${result.notes}`;
+      const notesInput = document.getElementById('scan-notes');
+      if (notesInput) notesInput.value = currentScan.notes;
+    }
+    
+  } catch (error) {
+    console.error('AI analysis failed:', error);
+    alert(`AI analysis failed: ${error.message}`);
+  } finally {
+    isAnalyzing = false;
+    if (analyzeBtn) {
+      analyzeBtn.disabled = false;
+      analyzeBtn.innerHTML = originalText || `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a4 4 0 0 1 4 4c0 1.95-2 3-2 8h-4c0-5-2-6.05-2-8a4 4 0 0 1 4-4z"/>
+          <path d="M10 22h4"/>
+          <path d="M10 18h4"/>
+        </svg>
+        Analyze with AI
+      `;
+    }
+  }
 }

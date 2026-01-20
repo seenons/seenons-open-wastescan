@@ -5,6 +5,7 @@
 import { generateUUID } from './utils/uuid.js';
 
 const STORAGE_KEY = 'seenons_waste_scan';
+const SETTINGS_KEY = 'seenons_settings';
 const CURRENT_SCHEMA_VERSION = 1;
 
 /**
@@ -220,3 +221,73 @@ export const STREAM_PRESETS = [
   'E-waste',
   'Other'
 ];
+
+// ============================================
+// Settings / API Key Management
+// ============================================
+
+/**
+ * Get default settings
+ * @returns {Object} Default settings
+ */
+function getDefaultSettings() {
+  return {
+    geminiApiKey: null
+  };
+}
+
+/**
+ * Load settings from LocalStorage
+ * @returns {Object} Settings object
+ */
+export function loadSettings() {
+  try {
+    const stored = localStorage.getItem(SETTINGS_KEY);
+    if (!stored) {
+      return getDefaultSettings();
+    }
+    return { ...getDefaultSettings(), ...JSON.parse(stored) };
+  } catch (error) {
+    console.error('Error loading settings:', error);
+    return getDefaultSettings();
+  }
+}
+
+/**
+ * Save settings to LocalStorage
+ * @param {Object} settings - Settings to save
+ */
+export function saveSettings(settings) {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  } catch (error) {
+    console.error('Error saving settings:', error);
+  }
+}
+
+/**
+ * Get the Gemini API key
+ * @returns {string|null} The API key or null
+ */
+export function getApiKey() {
+  const settings = loadSettings();
+  return settings.geminiApiKey || null;
+}
+
+/**
+ * Set the Gemini API key
+ * @param {string|null} apiKey - The API key to save
+ */
+export function setApiKey(apiKey) {
+  const settings = loadSettings();
+  settings.geminiApiKey = apiKey || null;
+  saveSettings(settings);
+}
+
+/**
+ * Check if API key is configured
+ * @returns {boolean} True if API key exists
+ */
+export function hasApiKey() {
+  return !!getApiKey();
+}
