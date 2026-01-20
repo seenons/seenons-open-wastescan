@@ -89,6 +89,14 @@ a:hover {
   color: var(--color-text);
 }
 
+.app-logo .logo-img {
+  width: 36px;
+  height: 36px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  padding: 4px;
+}
+
 .app-logo svg {
   width: 36px;
   height: 36px;
