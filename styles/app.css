@@ -827,53 +827,48 @@ a:hover {
    Modal
    ============================================ */
 
-.modal {
+#settings-modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
-  display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4);
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s linear 0.2s, opacity 0.2s ease;
+  padding: 16px;
 }
 
-.modal.open {
-  visibility: visible;
-  opacity: 1;
-  transition-delay: 0s;
+#settings-modal.open {
+  display: flex;
 }
 
 .modal-backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
   position: relative;
-  background: var(--color-bg);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   max-width: 480px;
   width: 100%;
   max-height: 90vh;
   overflow: auto;
-  transform: translateY(20px);
-  transition: transform 0.2s ease;
-}
-
-.modal.open .modal-content {
-  transform: translateY(0);
+  z-index: 1;
 }
 
 .modal-header {

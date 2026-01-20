@@ -243,42 +243,43 @@
       </div>
     </main>
 
-    <!-- Toast Notification -->
-    <div id="toast"></div>
+  </div>
 
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal">
-      <div class="modal-backdrop"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Settings</h2>
-          <button id="settings-close-btn" class="btn btn-ghost btn-icon" title="Close">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="settings-section">
-            <h3>AI Analysis (Gemini API)</h3>
-            <p class="settings-description">
-              Enable AI-powered waste analysis by adding your Google Gemini API key. 
-              The AI will analyze photos to detect waste streams and estimate weights.
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button id="settings-close-btn" class="btn btn-ghost btn-icon" title="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3>AI Analysis (Gemini API)</h3>
+          <p class="settings-description">
+            Enable AI-powered waste analysis by adding your Google Gemini API key. 
+            The AI will analyze photos to detect waste streams and estimate weights.
+          </p>
+          <div class="form-group">
+            <label for="api-key-input" class="form-label">Gemini API Key</label>
+            <input type="password" id="api-key-input" class="input" placeholder="Enter your API key...">
+            <p class="form-hint">
+              Get your free API key at <a href="https://ai.google.dev/" target="_blank" rel="noopener">ai.google.dev</a>
             </p>
-            <div class="form-group">
-              <label for="api-key-input" class="form-label">Gemini API Key</label>
-              <input type="password" id="api-key-input" class="input" placeholder="Enter your API key...">
-              <p class="form-hint">
-                Get your free API key at <a href="https://ai.google.dev/" target="_blank" rel="noopener">ai.google.dev</a>
-              </p>
-            </div>
-            <div class="api-key-status" id="api-key-status"></div>
           </div>
+          <div class="api-key-status" id="api-key-status"></div>
         </div>
-        <div class="modal-footer">
-          <button id="settings-save-btn" class="btn btn-primary">Save Settings</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="settings-save-btn" class="btn btn-primary">Save Settings</button>
       </div>
     </div>
   </div>
