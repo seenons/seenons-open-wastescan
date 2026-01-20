@@ -1,0 +1,107 @@
+/**
+ * Seenons-inspired Theme Tokens
+ * Clean, modern, minimal design with generous whitespace
+ */
+
+:root {
+  /* Primary Colors - Seenons Teal/Green */
+  --color-primary: #00A887;
+  --color-primary-dark: #008B6E;
+  --color-primary-light: #E8F5F1;
+  --color-primary-hover: #009579;
+  
+  /* Accent - Coral/Pink for CTAs */
+  --color-accent: #E85A6B;
+  --color-accent-dark: #D14A5A;
+  --color-accent-light: #FEF0F1;
+  
+  /* Backgrounds */
+  --color-bg: #FFFFFF;
+  --color-bg-alt: #F8FAFB;
+  --color-bg-elevated: #FFFFFF;
+  
+  /* Surfaces */
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F5F7FA;
+  
+  /* Text */
+  --color-text: #1A2B3C;
+  --color-text-secondary: #4A5D6E;
+  --color-text-muted: #6B7C8D;
+  --color-text-inverse: #FFFFFF;
+  
+  /* Borders */
+  --color-border: #E8ECEF;
+  --color-border-light: #F0F3F5;
+  --color-border-focus: #00A887;
+  
+  /* Status Colors */
+  --color-success: #00A887;
+  --color-warning: #FF9800;
+  --color-warning-bg: #FFF3E0;
+  --color-error: #E85A6B;
+  --color-error-bg: #FEF0F1;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+  
+  /* Layout */
+  --container-max: 1200px;
+  --container-narrow: 800px;
+  --header-height: 64px;
+  --mobile-action-height: 72px;
+}
+
+/* Dark mode support (optional future enhancement) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Can add dark mode tokens here */
+  }
+}

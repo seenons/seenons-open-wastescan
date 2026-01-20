@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#00A887">
+  <meta name="description" content="Seenons Waste Scan - Record and analyze waste separation potential">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Seenons Waste Scan</title>
+  <link rel="stylesheet" href="styles/theme.css">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header-inner">
+        <div class="app-logo">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="17" stroke="#00A887" stroke-width="3"/>
+            <path d="M20 10C20 10 13 15 13 20C13 25 16 29 20 29C24 29 27 25 27 20C27 15 20 10 20 10Z" fill="#00A887"/>
+          </svg>
+          <span>Seenons</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- List View (Home) -->
+      <div id="view-list" class="view active">
+        <div class="list-header">
+          <h1 class="list-title">Waste Scans</h1>
+          <button id="new-scan-btn" class="btn btn-accent btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Scan
+          </button>
+        </div>
+        <div id="scan-list">
+          <!-- Scan cards will be rendered here -->
+        </div>
+      </div>
+
+      <!-- Editor View -->
+      <div id="view-editor" class="view">
+        <div class="editor-header">
+          <button id="editor-back-btn" class="btn btn-ghost">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to List
+          </button>
+          <h1 id="editor-title">New Scan</h1>
+          <div class="editor-actions">
+            <button id="print-btn" class="btn btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9V2h12v7"/>
+                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+              </svg>
+              Print
+            </button>
+            <button id="download-btn" class="btn btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download
+            </button>
+            <button id="save-btn" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              Save
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-content">
+          <div class="editor-form">
+            <div class="editor-form-sections">
+              <!-- Metadata Section -->
+              <section class="editor-section">
+                <h2 class="editor-section-title">Scan Details</h2>
+                <div class="form-group">
+                  <label for="scan-location" class="form-label">Location (optional)</label>
+                  <input type="text" id="scan-location" class="input" placeholder="e.g., Warehouse A, Kitchen">
+                </div>
+                <div class="form-group">
+                  <label for="scan-datetime" class="form-label">Date & Time</label>
+                  <input type="datetime-local" id="scan-datetime" class="input">
+                </div>
+                <div class="form-group">
+                  <label for="scan-notes" class="form-label">Notes (optional)</label>
+                  <textarea id="scan-notes" class="textarea" placeholder="Any additional observations..."></textarea>
+                </div>
+              </section>
+
+              <!-- Photo Section -->
+              <section class="editor-section">
+                <h2 class="editor-section-title">Photo</h2>
+                <div class="photo-container">
+                  <div id="photo-preview">
+                    <div class="photo-placeholder">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                      </svg>
+                      <span>No photo</span>
+                    </div>
+                  </div>
+                  <input type="file" id="photo-input" accept="image/*" capture="environment">
+                  <div class="photo-actions">
+                    <button type="button" id="photo-capture-btn" class="btn btn-secondary">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                      </svg>
+                      Take Photo
+                    </button>
+                    <button type="button" id="photo-remove-btn" class="btn btn-ghost" style="display: none;">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Total Weight Section -->
+              <section class="editor-section">
+                <h2 class="editor-section-title">Total Residual Waste</h2>
+                <div class="form-group">
+                  <label for="total-weight" class="form-label">Weight before separation (required)</label>
+                  <div class="stream-weight" style="width: 150px;">
+                    <input type="number" id="total-weight" class="input stream-weight-input" placeholder="0.0" step="0.1" min="0" style="width: 100px;">
+                    <span class="stream-weight-unit">kg</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Streams Section -->
+              <section class="editor-section">
+                <h2 class="editor-section-title">Extractable Waste Streams</h2>
+                <div class="streams-container">
+                  <div id="streams-list">
+                    <!-- Stream rows will be rendered here -->
+                  </div>
+                  <button type="button" id="add-stream-btn" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Stream
+                  </button>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <!-- Summary Panel -->
+          <aside class="editor-section summary-panel">
+            <h2 class="editor-section-title">Summary</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="summary-label">Total Residual</span>
+                <span class="summary-value" id="summary-total">0.0 kg</span>
+              </div>
+              <div class="summary-item highlight">
+                <span class="summary-label">Extractable</span>
+                <span class="summary-value" id="summary-extracted">0.0 kg</span>
+              </div>
+              <div class="summary-item highlight-primary">
+                <span class="summary-label">Separation</span>
+                <span class="summary-value" id="summary-separation">0.0%</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Remaining</span>
+                <span class="summary-value" id="summary-remaining">0.0 kg</span>
+              </div>
+            </div>
+            <div id="summary-warning"></div>
+            <div class="summary-breakdown">
+              <h4>Stream Breakdown</h4>
+              <div id="summary-breakdown">
+                <p class="muted">No streams added</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Mobile Actions -->
+        <div class="mobile-actions">
+          <button id="editor-back-btn-mobile" class="btn btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back
+          </button>
+          <button id="download-btn-mobile" class="btn btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+          <button id="print-btn-mobile" class="btn btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9V2h12v7"/>
+              <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+          </button>
+          <button id="save-btn-mobile" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Save
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast"></div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
