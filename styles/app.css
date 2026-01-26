@@ -276,6 +276,12 @@ a:hover {
   margin-bottom: var(--space-6);
 }
 
+.list-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .list-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
@@ -766,6 +772,11 @@ a:hover {
     gap: var(--space-4);
   }
   
+  .list-header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
   .list-header .btn {
     width: 100%;
   }
@@ -835,7 +846,8 @@ a:hover {
    Modal
    ============================================ */
 
-#settings-modal {
+#settings-modal,
+#classification-modal {
   display: none;
   position: fixed;
   top: 0;
@@ -850,7 +862,8 @@ a:hover {
   padding: 16px;
 }
 
-#settings-modal.open {
+#settings-modal.open,
+#classification-modal.open {
   display: flex;
 }
 
@@ -877,6 +890,10 @@ a:hover {
   max-height: 90vh;
   overflow: auto;
   z-index: 1;
+}
+
+.modal-content-large {
+  max-width: 720px;
 }
 
 .modal-header {
@@ -979,6 +996,105 @@ a:hover {
 
 .spinner {
   animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   Classification Styles
+   ============================================ */
+
+.classification-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.classification-result {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 2px solid var(--color-border);
+}
+
+.classification-result h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-4);
+}
+
+.classification-section {
+  margin-bottom: var(--space-5);
+}
+
+.classification-section:last-child {
+  margin-bottom: 0;
+}
+
+.classification-section h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.classification-section p {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+}
+
+.classification-bins {
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+}
+
+.classification-bins h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-3);
+}
+
+.bins-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.bin-tag {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: #ffffff;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.classification-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  gap: var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.classification-loading p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.classification-markdown {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.classification-markdown strong {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Analyze Button */

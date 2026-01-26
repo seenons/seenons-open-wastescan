@@ -11,9 +11,32 @@ import { formatKg, formatPercent, formatDate } from '../utils/format.js';
  * @param {Function} onNewScan - Callback when creating a new scan
  */
 export function initListView(onEditScan, onNewScan) {
+  // Use event delegation on the list header to handle button clicks
+  // This ensures it works even if buttons are re-rendered
+  const listHeader = document.querySelector('.list-header');
+  if (listHeader) {
+    listHeader.addEventListener('click', (e) => {
+      const target = e.target.closest('#new-scan-btn');
+      if (target) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (onNewScan) {
+          onNewScan();
+        }
+      }
+    });
+  }
+  
+  // Also attach directly as backup
   const newScanBtn = document.getElementById('new-scan-btn');
   if (newScanBtn) {
-    newScanBtn.addEventListener('click', onNewScan);
+    newScanBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (onNewScan) {
+        onNewScan();
+      }
+    });
   }
   
   // Store callbacks for use in render

@@ -5,6 +5,7 @@
 
 import { initListView, renderList } from './views/list.js';
 import { initEditorView, loadScan } from './views/editor.js';
+import { initClassificationModal } from './views/classification.js';
 import { getApiKey, setApiKey, hasApiKey } from './storage.js';
 import { testApiKey } from './api/gemini.js';
 
@@ -28,6 +29,9 @@ function init() {
   // Initialize views
   initListView(handleEditScan, handleNewScan);
   initEditorView(handleBackToList);
+  
+  // Initialize classification modal
+  initClassificationModal();
   
   // Initialize settings modal
   initSettingsModal();
